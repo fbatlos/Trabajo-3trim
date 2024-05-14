@@ -1,10 +1,10 @@
 package output
-import output.IOutputiinfo
+
+import entity.Grupos
+import service.CTFSServiceImpl
+import service.GruposServiceImpl
+
 //import logicaES.IEntradaSalida
-import java.io.File
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 
 /**
  * Clase de utilidades para proporcionar funciones comunes utilizadas en el juego de Bingo.
@@ -19,92 +19,71 @@ class Utilidades {
          *
          * @param args Array de strings conteniendo los argumentos de entrada.
          * @param consola Interfaz de entrada/salida para comunicarse con el usuario.
-         * @return Un par conteniendo el formato y la ruta del fichero si está especificado, o null si no hay fichero.
+         *
          */
-        fun comprobarArgumentos(args: Array<String>, consola: IOutputiinfo) : Pair<String, String?>{
-            var formato = "tx" // Valor por defecto
-            var rutaFichero : String? = null
+        fun comprobarArgumentos( args: ArrayList<String>, consola: IOutputiinfo,gruposServiceImpl: GruposServiceImpl,ctfsServiceImpl: CTFSServiceImpl){
+            try {
+                val formato: String? = args[0]
 
-            // Iterar sobre los argumentos para identificar el formato deseado
-            for (i in args.indices) {
-                if (args[i] == "-f" && i + 1 < args.size) {
-                    formato = args[i + 1]
+                when (formato) {
+
+                    "-g" -> {
+                        args.drop(0)
+                        println(args)
+                        crearGrupo(args,gruposServiceImpl,consola)
+                    }
+
+                    "-p" -> {
+                        "P"
+                    }
+
+                    "-t" -> {
+                        "T"
+                    }
+
+                    "-e" -> {
+                        "E"
+                    }
+
+                    "-l" -> {
+                        "L"
+                    }
+
+                    "-c" -> {
+                        "C"
+                    }
+
+                    "-f" -> {
+                        "F"
+                    }
+
+                    "-i" -> {
+                        "I"
+                    }
+
+                    else -> {
+                        error("")
+                    }
                 }
-                else if (args[i] == "-b" && i + 1 < args.size) {
-                    rutaFichero = args[i + 1]
-                }
+            }catch (e:IllegalStateException){
+                consola.showMenssage("Datos no validos.")
             }
-
-            // Comprobar existencia del directorio de Bingo Central
-            if (rutaFichero != null) {
-                if (!File(rutaFichero).isDirectory) {
-                    rutaFichero = null
-                    consola.showMenssage("*Error* ruta de fichero no encontrado para Bingo Central, pasamos a Bingo local")
+        }
+        fun crearGrupo(args: ArrayList<String>, gruposServiceImpl: GruposServiceImpl,consola: IOutputiinfo){
+            try {
+                if (args[1][1].isDigit() || args.isEmpty()){
+                    error("")
+                }else{
+                    gruposServiceImpl.crearGrupo(Grupos(grupodesc = args[1]))
                 }
+            }catch (e:IllegalStateException){
+                consola.showMenssage("ERROR: El número de parámetros no es adecuado.")
+            }catch (e:Exception){
+                consola.showMenssage("ERROR: Algo a salido mal.")
             }
-
-            return Pair(formato, rutaFichero)
-        }
-
-        /**
-         * Genera la ruta completa del fichero de log para el Bingo basándose en la fecha y hora actual.
-         *
-         * @return La ruta completa del fichero de log.
-         */
-        fun generarFicheroLogBingo() = "${generarNombreRutaRelativaLog()}\\${generarNombreArchivoLog()}"
-
-        /**
-         * Genera una ruta relativa basada en la fecha actual para almacenar logs.
-         *
-         * @return Ruta relativa para el log.
-         */
-        private fun generarNombreRutaRelativaLog(): String {
-            val fechaActual = LocalDate.now()
-            val formateador = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-            return "logoBingo\\${fechaActual.format(formateador)}\\"
-        }
-
-        /**
-         * Genera el nombre del archivo de log basado en la fecha y hora actual.
-         *
-         * @return Nombre del archivo de log.
-         */
-        private fun generarNombreArchivoLog(): String {
-            val fechaHoraActual = LocalDateTime.now()
-            val formateador = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")
-            val fechaHoraFormateada = fechaHoraActual.format(formateador)
-            return "logBingo_$fechaHoraFormateada.txt"
-        }
-
-        /**
-         * Genera una cabecera para el fichero de log del Bingo, incluyendo la fecha y hora actual.
-         *
-         * @return Cabecera del log del Bingo.
-         */
-        fun getCabeceraLogoBingo() : String {
-            val now = LocalDateTime.now()
-            val dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
-            val formattedDateTimeLine = now.format(dateTimeFormatter)
-            return "Juego del Bingo $formattedDateTimeLine\n\n"
-        }
-
-        /**
-         * Solicita al usuario el número de jugadores que participarán en el juego.
-         *
-         * @param consola Interfaz de entrada/salida para comunicarse con el usuario.
-         * @return El número de jugadores.
-         */
-
-        /**
-         * Obtiene la fecha y hora actual formateada como "dd/MM/yyyy HH:mm:ss".
-         *
-         * @return La fecha y hora actual formateada.
-         */
-        fun obtenerFechaHoraActual(): String {
-            val ahora = LocalDateTime.now()
-            val formato = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
-            return ahora.format(formato)
         }
     }
 
+
 }
+

@@ -2,11 +2,11 @@ package dao
 
 
 
-import output.Consola
+import output.IOutputiinfo
 
 
 interface ICTFSDAO {
 
-    fun getAllLibros(consola: Consola):MutableList<String>?
+    fun getAllLibros(consola: IOutputiinfo):MutableList<String>?
 
 }

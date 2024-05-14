@@ -2,6 +2,7 @@ package dao
 
 
 import output.Consola
+import output.IOutputiinfo
 import javax.sql.DataSource
 
 
@@ -9,7 +10,7 @@ class CTFSDAO(private val dataSource: DataSource) : ICTFSDAO {
 
 
 
-    override fun getAllLibros(consola: Consola): MutableList<String>? {
+    override fun getAllLibros(consola: IOutputiinfo): MutableList<String>? {
         return try {
             val libros = mutableListOf<String>()
             dataSource.connection.use { conn ->
