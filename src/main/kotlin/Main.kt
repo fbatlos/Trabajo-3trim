@@ -7,9 +7,10 @@ import output.Consola
 import output.Utilidades
 import service.CTFSServiceImpl
 import service.GruposServiceImpl
-
+//args: Array<String>
 fun main() {
-    val arg = arrayListOf("-g")
+
+    val args = arrayOf("-g","rgsdg")
 
     val consola =Consola()
 
@@ -29,6 +30,6 @@ fun main() {
 
 
 
-    Utilidades.comprobarArgumentos(arg,consola,gruposServiceImpl,ctfsServiceImpl)
+    Utilidades.comprobarArgumentos(args,consola,gruposServiceImpl,ctfsServiceImpl)
 
 }

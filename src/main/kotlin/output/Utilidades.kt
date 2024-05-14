@@ -21,16 +21,27 @@ class Utilidades {
          * @param consola Interfaz de entrada/salida para comunicarse con el usuario.
          *
          */
-        fun comprobarArgumentos( args: ArrayList<String>, consola: IOutputiinfo,gruposServiceImpl: GruposServiceImpl,ctfsServiceImpl: CTFSServiceImpl){
+        fun comprobarArgumentos( args: Array<String>, consola: IOutputiinfo,gruposServiceImpl: GruposServiceImpl,ctfsServiceImpl: CTFSServiceImpl){
             try {
                 val formato: String? = args[0]
 
                 when (formato) {
 
                     "-g" -> {
-                        args.drop(0)
-                        println(args)
-                        crearGrupo(args,gruposServiceImpl,consola)
+                        try {
+
+                            val newargs = arrayOf(args[1])
+                            newargs.forEach { println(it) }
+                            crearGrupo(newargs, gruposServiceImpl, consola)
+                        }catch (e:ArrayIndexOutOfBoundsException){
+                            consola.showMenssage("ERROR: El número de parámetros no es adecuado.")
+                        }catch (e:IllegalStateException){
+                            consola.showMenssage("ERROR: El número de parámetros no es adecuado.")
+                        }catch (e:StringIndexOutOfBoundsException){
+                            consola.showMenssage("ERROR: No hay suficientes datos.")
+                        }catch (e:Exception){
+                            consola.showMenssage("ERROR: Algo a salido muy mal.")
+                        }
                     }
 
                     "-p" -> {
@@ -69,18 +80,14 @@ class Utilidades {
                 consola.showMenssage("Datos no validos.")
             }
         }
-        fun crearGrupo(args: ArrayList<String>, gruposServiceImpl: GruposServiceImpl,consola: IOutputiinfo){
-            try {
-                if (args[1][1].isDigit() || args.isEmpty()){
-                    error("")
-                }else{
-                    gruposServiceImpl.crearGrupo(Grupos(grupodesc = args[1]))
-                }
-            }catch (e:IllegalStateException){
-                consola.showMenssage("ERROR: El número de parámetros no es adecuado.")
-            }catch (e:Exception){
-                consola.showMenssage("ERROR: Algo a salido mal.")
+        fun crearGrupo(args: Array<String>, gruposServiceImpl: GruposServiceImpl,consola: IOutputiinfo) {
+
+            if (args[0][0].isDigit() || args.isEmpty()) {
+                error("")
+            } else {
+                gruposServiceImpl.crearGrupo(Grupos(grupodesc = args[0]))
             }
+
         }
     }
 
