@@ -9,4 +9,5 @@ interface ICTFSDAO{
 
     fun crearCTFS(ctfs: CTFS , consola: IOutputiinfo):CTFS?
 
+    fun eliminarCTFS(idgrupo:Int, consola: IOutputiinfo):Boolean?
 }

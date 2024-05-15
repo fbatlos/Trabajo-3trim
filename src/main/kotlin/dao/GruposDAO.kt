@@ -27,4 +27,25 @@ class GruposDAO(private val dataSource: DataSource):IGruposDAO {
             null
         }
     }
+
+    override fun eliminarGrupo(idgrupo: Int, consola: IOutputiinfo): Boolean? {
+        val sql = "DELETE FROM GRUPOS where grupoid = (?)"
+        return try {
+            dataSource.connection.use { conn ->
+                conn.prepareStatement(sql).use { stmt ->
+                    stmt.setInt(1, idgrupo)
+                    val rs = stmt.executeUpdate()
+                    if (rs == 1) {
+                        true
+                    } else {
+                        consola.showMenssage("Algo no fue bien!! (${rs})", true)
+                        null
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            consola.showMenssage("Algo no fue bien!! (${e.message})", true)
+            null
+        }
+    }
 }

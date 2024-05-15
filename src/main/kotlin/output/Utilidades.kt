@@ -34,19 +34,32 @@ class Utilidades {
 
                         newargs = arrayOf(args[1])
                         newargs.forEach { println(it) }
-                        crearGrupo(newargs, gruposServiceImpl)
+                        if (crearGrupo(newargs, gruposServiceImpl) is Grupos){
+                            consola.showMenssage("Se añadió con éxito el grupo.")
+                        }else{
+                            consola.showMenssage("No se pudo añadir.")
+                        }
                     }
 
                     "-p" -> {
 
                         newargs = arrayOf(args[1],args[2],args[3])
                         newargs.forEach { println(it) }
-                        crearCTFS(newargs,ctfsServiceImpl)
-
+                        if (crearCTFS(newargs,ctfsServiceImpl) is CTFS){
+                            consola.showMenssage("Se añadió con éxito el ctf's.")
+                        }else{
+                            consola.showMenssage("No se pudo añadir.")
+                        }
                     }
 
                     "-t" -> {
-                        "T"
+
+                        newargs = arrayOf(args[1])
+                        if (eliminarGrupo(newargs,gruposServiceImpl,ctfsServiceImpl)==true){
+                            consola.showMenssage("Se eliminó al grupo.")
+                        }else{
+                            consola.showMenssage("No se pudo eliminar al grupo.")
+                        }
                     }
 
                     "-e" -> {
@@ -85,24 +98,36 @@ class Utilidades {
                 consola.showMenssage("ERROR: Algo a salido muy mal.")
             }
         }
-        fun crearGrupo(args: Array<String>, gruposServiceImpl: GruposServiceImpl) {
+        fun crearGrupo(args: Array<String>, gruposServiceImpl: GruposServiceImpl):Grupos? {
 
             if (args[0][0].isDigit() || args.isEmpty()) {
                 error("")
             } else {
-                gruposServiceImpl.crearGrupo(Grupos(grupodesc = args[0]))
+                return gruposServiceImpl.crearGrupo(Grupos(grupodesc = args[0]))
             }
 
         }
 
-        fun crearCTFS(args: Array<String>, ctfsServiceImpl: CTFSServiceImpl) {
+        fun crearCTFS(args: Array<String>, ctfsServiceImpl: CTFSServiceImpl):CTFS? {
 
-            if (args[0][0].isDigit() || args[1][0].isDigit() || args[2][0].isDigit()) {
-                ctfsServiceImpl.crearCTFS(CTFS(CTDid = args[0].toInt(), grupoid = args[1].toInt() , puntuacion = args[2].toInt() ))
+            if (args[0][0].isDigit() && args[1][0].isDigit() && args[2][0].isDigit()) {
+                return ctfsServiceImpl.crearCTFS(CTFS(CTDid = args[0].toInt(), grupoid = args[1].toInt() , puntuacion = args[2].toInt() ))
             } else {
                 error("")
             }
 
+        }
+
+        fun eliminarGrupo(args: Array<String>, gruposServiceImpl: GruposServiceImpl,ctfsServiceImpl: CTFSServiceImpl):Boolean?{
+            if (args[0][0].isDigit()) {
+                if (ctfsServiceImpl.eliminarCTFS(args[0].toInt()) != null){
+                    return gruposServiceImpl.eliminarGrupo(args[0].toInt())
+                }else{
+                    return null
+                }
+            } else {
+                error("")
+            }
         }
     }
 
