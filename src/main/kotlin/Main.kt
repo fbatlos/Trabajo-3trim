@@ -10,7 +10,7 @@ import service.GruposServiceImpl
 //args: Array<String>
 fun main() {
 
-    val args = arrayOf("-g","rgsdg")
+    val args = arrayOf("-p","1","1","1")
 
     val consola =Consola()
 
@@ -23,12 +23,6 @@ fun main() {
     val gruposServiceImpl = GruposServiceImpl(gruposDAO,consola)
 
     val ctfsServiceImpl =CTFSServiceImpl(ctfsdao,consola)
-
-
-
-
-
-
 
     Utilidades.comprobarArgumentos(args,consola,gruposServiceImpl,ctfsServiceImpl)
 

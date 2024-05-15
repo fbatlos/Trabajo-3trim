@@ -1,14 +1,14 @@
 package dao
 
 import entity.Grupos
-import output.Consola
+
 import output.IOutputiinfo
 import javax.sql.DataSource
 
 
 class GruposDAO(private val dataSource: DataSource):IGruposDAO {
     override fun crearGrupo(grupos: Grupos, consola: IOutputiinfo):Grupos? {
-        val sql = "INSERT INTO GRUPOS grupodesc VALUES (?)"
+        val sql = "INSERT INTO GRUPOS (grupodesc) VALUES (?)"
         return try {
             dataSource.connection.use { conn ->
                 conn.prepareStatement(sql).use { stmt ->

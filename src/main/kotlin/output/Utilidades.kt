@@ -1,5 +1,6 @@
 package output
 
+import entity.CTFS
 import entity.Grupos
 import service.CTFSServiceImpl
 import service.GruposServiceImpl
@@ -25,27 +26,23 @@ class Utilidades {
             try {
                 val formato: String? = args[0]
 
+                val newargs:Array<String>
+
                 when (formato) {
 
                     "-g" -> {
-                        try {
 
-                            val newargs = arrayOf(args[1])
-                            newargs.forEach { println(it) }
-                            crearGrupo(newargs, gruposServiceImpl, consola)
-                        }catch (e:ArrayIndexOutOfBoundsException){
-                            consola.showMenssage("ERROR: El número de parámetros no es adecuado.")
-                        }catch (e:IllegalStateException){
-                            consola.showMenssage("ERROR: El número de parámetros no es adecuado.")
-                        }catch (e:StringIndexOutOfBoundsException){
-                            consola.showMenssage("ERROR: No hay suficientes datos.")
-                        }catch (e:Exception){
-                            consola.showMenssage("ERROR: Algo a salido muy mal.")
-                        }
+                        newargs = arrayOf(args[1])
+                        newargs.forEach { println(it) }
+                        crearGrupo(newargs, gruposServiceImpl)
                     }
 
                     "-p" -> {
-                        "P"
+
+                        newargs = arrayOf(args[1],args[2],args[3])
+                        newargs.forEach { println(it) }
+                        crearCTFS(newargs,ctfsServiceImpl)
+
                     }
 
                     "-t" -> {
@@ -76,16 +73,34 @@ class Utilidades {
                         error("")
                     }
                 }
+            }catch (e:ArrayIndexOutOfBoundsException){
+                consola.showMenssage("ERROR: El número de parámetros no es adecuado.")
             }catch (e:IllegalStateException){
-                consola.showMenssage("Datos no validos.")
+                consola.showMenssage("ERROR: El número de parámetros no es adecuado.")
+            }catch (e:StringIndexOutOfBoundsException) {
+                consola.showMenssage("ERROR: No hay suficientes datos.")
+            }catch (e:NumberFormatException){
+                consola.showMenssage("ERROR: No ha introducido el parámetro adecuado.")
+            }catch (e:Exception){
+                consola.showMenssage("ERROR: Algo a salido muy mal.")
             }
         }
-        fun crearGrupo(args: Array<String>, gruposServiceImpl: GruposServiceImpl,consola: IOutputiinfo) {
+        fun crearGrupo(args: Array<String>, gruposServiceImpl: GruposServiceImpl) {
 
             if (args[0][0].isDigit() || args.isEmpty()) {
                 error("")
             } else {
                 gruposServiceImpl.crearGrupo(Grupos(grupodesc = args[0]))
+            }
+
+        }
+
+        fun crearCTFS(args: Array<String>, ctfsServiceImpl: CTFSServiceImpl) {
+
+            if (args[0][0].isDigit() || args[1][0].isDigit() || args[2][0].isDigit()) {
+                ctfsServiceImpl.crearCTFS(CTFS(CTDid = args[0].toInt(), grupoid = args[1].toInt() , puntuacion = args[2].toInt() ))
+            } else {
+                error("")
             }
 
         }

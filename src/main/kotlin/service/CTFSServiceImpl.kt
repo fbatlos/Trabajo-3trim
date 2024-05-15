@@ -2,11 +2,14 @@ package service
 
 
 import dao.ICTFSDAO
-import output.Consola
+import entity.CTFS
 import output.IOutputiinfo
-import java.util.*
+
 
 //private val userDao: IUserDAO, private val consola: Consola
-class CTFSServiceImpl(ctfsdao:ICTFSDAO,consola:IOutputiinfo) : ICTFSService {
+class CTFSServiceImpl(private val ctfsdao:ICTFSDAO,private val consola:IOutputiinfo) : ICTFSService {
+    override fun crearCTFS(ctfs: CTFS) {
+        ctfsdao.crearCTFS(ctfs,consola)
+    }
 
 }

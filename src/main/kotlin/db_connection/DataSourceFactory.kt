@@ -3,8 +3,7 @@ package db_connection
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import javax.sql.DataSource
-import java.sql.DriverManager
-import java.sql.Wrapper
+
 
 object DataSourceFactory {
     enum class DataSourceType {
@@ -18,7 +17,7 @@ object DataSourceFactory {
         return when (dataSourceType) {
             DataSourceType.HIKARI -> {
                 val config = HikariConfig()
-                config.jdbcUrl = "jdbc:h2:./default"
+                config.jdbcUrl = "jdbc:h2:./examen"
                 config.username = "user"
                 config.password = "user"
                 config.driverClassName = "org.h2.Driver"

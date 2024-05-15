@@ -2,11 +2,11 @@ package dao
 
 
 
+import entity.CTFS
 import output.IOutputiinfo
 
+interface ICTFSDAO{
 
-interface ICTFSDAO {
-
-    fun getAllLibros(consola: IOutputiinfo):MutableList<String>?
+    fun crearCTFS(ctfs: CTFS , consola: IOutputiinfo):CTFS?
 
 }

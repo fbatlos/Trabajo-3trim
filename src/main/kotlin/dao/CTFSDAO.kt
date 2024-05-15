@@ -1,33 +1,35 @@
 package dao
 
 
-import output.Consola
+import entity.CTFS
 import output.IOutputiinfo
 import javax.sql.DataSource
 
 
 class CTFSDAO(private val dataSource: DataSource) : ICTFSDAO {
-
-
-
-    override fun getAllLibros(consola: IOutputiinfo): MutableList<String>? {
+    override fun crearCTFS(ctfs: CTFS, consola: IOutputiinfo):CTFS? {
+        val sql = "INSERT INTO CTFS  (CTFid , grupoid , puntuacion) VALUES (?,?,?)"
         return try {
-            val libros = mutableListOf<String>()
             dataSource.connection.use { conn ->
-                conn.createStatement().use { stmt ->
-                    stmt.executeQuery("SELECT TITULO FROM biblioteca").use { rs ->
-                        while (rs.next()) {
-                            libros.add(rs.getString("TITULO"))
-                        }
+                conn.prepareStatement(sql).use { stmt ->
+                    stmt.setInt(1, ctfs.CTDid)
+                    stmt.setInt(2,ctfs.grupoid)
+                    stmt.setInt(3,ctfs.puntuacion)
+                    val rs = stmt.executeUpdate()
+                    if (rs == 1) {
+                        ctfs
+                    } else {
+                        consola.showMenssage("Algo no fue bien!! (${rs})", true)
+                        null
                     }
                 }
             }
-            libros
         } catch (e: Exception) {
             consola.showMenssage("Algo no fue bien!! (${e.message})", true)
             null
         }
     }
+
 
 }
 
