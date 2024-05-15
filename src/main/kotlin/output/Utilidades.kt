@@ -4,6 +4,8 @@ import entity.CTFS
 import entity.Grupos
 import service.CTFSServiceImpl
 import service.GruposServiceImpl
+import service.ICTFSService
+import service.IGruposServices
 
 //import logicaES.IEntradaSalida
 
@@ -75,13 +77,17 @@ class Utilidades {
                             error("")
                         }
                         newargs = arrayOf(args[1],args[2])
-                        if (eliminarCTFS(newargs,gruposServiceImpl,ctfsServiceImpl) ==true){
+                        if (eliminarCTFS(newargs,ctfsServiceImpl) ==true){
                             consola.showMenssage("Se eliminó el CTFS de id = ${newargs[0]} y idgrupo = ${newargs[1]}.")
                         }
                     }
 
                     "-l" -> {
-                        "L"
+                        if (args.size > 2){
+                            error("")
+                        }
+                        buscarGrupo(args,gruposServiceImpl,ctfsServiceImpl)
+
                     }
 
                     "-c" -> {
@@ -144,7 +150,7 @@ class Utilidades {
             }
         }
 
-        fun eliminarCTFS(args: Array<String>, gruposServiceImpl: GruposServiceImpl,ctfsServiceImpl: CTFSServiceImpl):Boolean?{
+        fun eliminarCTFS(args: Array<String>,ctfsServiceImpl: CTFSServiceImpl):Boolean?{
             if (args[0][0].isDigit() && args[1][0].isDigit()) {
                 if (ctfsServiceImpl.eliminarCTFS(args[0].toInt(),args[1].toInt()) != null){
                     return true
@@ -153,6 +159,14 @@ class Utilidades {
                 }
             } else {
                 error("")
+            }
+        }
+
+        fun buscarGrupo(args:Array<String>,gruposServiceImpl:IGruposServices,ctfsServiceImpl:ICTFSService){
+            if (args[1][0].isDigit()){
+                gruposServiceImpl.buscarGrupo(args[1].toInt())
+            } else {
+
             }
         }
     }

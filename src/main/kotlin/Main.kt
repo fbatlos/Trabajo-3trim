@@ -10,7 +10,7 @@ import service.GruposServiceImpl
 //args: Array<String>
 fun main() {
 
-    val args = arrayOf("-e","1","5")
+    val args = arrayOf("-l","1","5")
 
     val consola =Consola()
 
