@@ -1,6 +1,0 @@
-package service
-
-
-interface ICTFSService {
-
-}
