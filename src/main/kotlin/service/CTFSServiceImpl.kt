@@ -8,12 +8,16 @@ import output.IOutputiinfo
 
 //private val userDao: IUserDAO, private val consola: Consola
 class CTFSServiceImpl(private val ctfsdao:ICTFSDAO,private val consola:IOutputiinfo) : ICTFSService {
-    override fun crearCTFS(ctfs: CTFS):CTFS? {
+    override fun crearCTFS(ctfs: CTFS): Boolean? {
         return ctfsdao.crearCTFS(ctfs,consola)
     }
 
-    override fun eliminarCTFS(idgroup: Int): Boolean? {
-        return ctfsdao.eliminarCTFS(idgroup,consola)
+    override fun eliminarCTFSPorIdgrupo(idgroup: Int): Boolean? {
+        return ctfsdao.eliminarCTFSPorIdgrupo(idgroup,consola)
+    }
+
+    override fun eliminarCTFS(ctfsid: Int,idgroup: Int): Boolean? {
+        return ctfsdao.eliminarCTFS(ctfsid,idgroup, consola)
     }
 
 }

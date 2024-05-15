@@ -45,25 +45,39 @@ class Utilidades {
 
                         newargs = arrayOf(args[1],args[2],args[3])
                         newargs.forEach { println(it) }
-                        if (crearCTFS(newargs,ctfsServiceImpl) is CTFS){
-                            consola.showMenssage("Se añadió con éxito el ctf's.")
-                        }else{
-                            consola.showMenssage("No se pudo añadir.")
+                        val p = crearCTFS(newargs,ctfsServiceImpl)
+                        when{
+                            p == true -> {
+                                consola.showMenssage("Se añadió con éxito el ctf's.")
+                            }
+                            p == false ->{
+                                consola.showMenssage("Se actualizó con éxito el ctf's.")
+                            }
+                            else -> {
+                                consola.showMenssage("No se pudo añadir.")
+                            }
                         }
                     }
 
-                    "-t" -> {
 
+                    "-t" -> {
+                        if(args.size > 2 ){
+                            error("")
+                        }
                         newargs = arrayOf(args[1])
                         if (eliminarGrupo(newargs,gruposServiceImpl,ctfsServiceImpl)==true){
                             consola.showMenssage("Se eliminó al grupo.")
-                        }else{
-                            consola.showMenssage("No se pudo eliminar al grupo.")
                         }
                     }
 
                     "-e" -> {
-                        "E"
+                        if(args.size > 3 ){
+                            error("")
+                        }
+                        newargs = arrayOf(args[1],args[2])
+                        if (eliminarCTFS(newargs,gruposServiceImpl,ctfsServiceImpl) ==true){
+                            consola.showMenssage("Se eliminó el CTFS de id = ${newargs[0]} y idgrupo = ${newargs[1]}.")
+                        }
                     }
 
                     "-l" -> {
@@ -108,7 +122,7 @@ class Utilidades {
 
         }
 
-        fun crearCTFS(args: Array<String>, ctfsServiceImpl: CTFSServiceImpl):CTFS? {
+        fun crearCTFS(args: Array<String>, ctfsServiceImpl: CTFSServiceImpl):Boolean? {
 
             if (args[0][0].isDigit() && args[1][0].isDigit() && args[2][0].isDigit()) {
                 return ctfsServiceImpl.crearCTFS(CTFS(CTDid = args[0].toInt(), grupoid = args[1].toInt() , puntuacion = args[2].toInt() ))
@@ -120,8 +134,20 @@ class Utilidades {
 
         fun eliminarGrupo(args: Array<String>, gruposServiceImpl: GruposServiceImpl,ctfsServiceImpl: CTFSServiceImpl):Boolean?{
             if (args[0][0].isDigit()) {
-                if (ctfsServiceImpl.eliminarCTFS(args[0].toInt()) != null){
+                if (ctfsServiceImpl.eliminarCTFSPorIdgrupo(args[0].toInt()) != null){
                     return gruposServiceImpl.eliminarGrupo(args[0].toInt())
+                }else{
+                    return null
+                }
+            } else {
+                error("")
+            }
+        }
+
+        fun eliminarCTFS(args: Array<String>, gruposServiceImpl: GruposServiceImpl,ctfsServiceImpl: CTFSServiceImpl):Boolean?{
+            if (args[0][0].isDigit() && args[1][0].isDigit()) {
+                if (ctfsServiceImpl.eliminarCTFS(args[0].toInt(),args[1].toInt()) != null){
+                    return true
                 }else{
                     return null
                 }

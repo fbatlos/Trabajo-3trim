@@ -4,7 +4,9 @@ import entity.CTFS
 
 
 interface ICTFSService {
-    fun crearCTFS(ctfs: CTFS):CTFS?
+    fun crearCTFS(ctfs: CTFS):Boolean?
 
-    fun eliminarCTFS(idgroup:Int):Boolean?
+    fun eliminarCTFSPorIdgrupo(idgroup:Int):Boolean?
+
+    fun eliminarCTFS(idgroup:Int , ctfsid:Int):Boolean?
 }
